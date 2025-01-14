@@ -598,9 +598,8 @@ def batch_version_worker(noop: bool, major: bool, minor: bool, patch: bool, prer
         sys.exit(1)
 
 
-def init_worker(project_id: str, current_version: str, project_dir: str) -> None:
+def init_worker(config: ProjectConfig, current_version: str) -> None:
     try:
-        config = get_project_config(project_id, project_dir)
         release_mate_dir = Path(config.repo_root) / '.release-mate'
         release_mate_dir.mkdir(exist_ok=True)
 

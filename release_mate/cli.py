@@ -25,7 +25,8 @@ def init(
     project_dir: str,
 ):
     """Initialize a new release-mate project."""
-    api.init_worker(project_id, current_version, project_dir)
+    config = api.get_project_config(project_id, project_dir)
+    api.init_worker(config, current_version)
 
 
 @cli.command()
