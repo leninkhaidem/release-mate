@@ -594,22 +594,18 @@ def batch_version_worker(noop: bool, major: bool, minor: bool, patch: bool, prer
                 "yellow"
             )
 
-    except Exception as e:
+    except Exception:
         console.print_exception()
         sys.exit(1)
 
 
-def init_worker(config: ProjectConfig, current_version: str) -> None:
+def init_worker(config: ProjectConfig, current_version: str, template_dir: str) -> None:
     try:
         release_mate_dir = Path(config.repo_root) / '.release-mate'
         release_mate_dir.mkdir(exist_ok=True)
 
         # Check for duplicate project config
         config_file = validate_config_file(config.project_id, config)
-        # Get template directory path
-        template_dir = pkg_resources.resource_filename(
-            __package__ or 'release_mate', 'templates/project')
-
         _ = cookiecutter(
             template_dir,
             no_input=True,

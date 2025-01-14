@@ -2,6 +2,7 @@
 from typing import Optional
 
 import click
+import pkg_resources
 from rich.console import Console
 
 from . import __version__, api
@@ -26,7 +27,9 @@ def init(
 ):
     """Initialize a new release-mate project."""
     config = api.get_project_config(project_id, project_dir)
-    api.init_worker(config, current_version)
+    template_dir = pkg_resources.resource_filename(
+        "release_mate", 'templates/project')
+    api.init_worker(config, current_version, template_dir=template_dir)
 
 
 @cli.command()
