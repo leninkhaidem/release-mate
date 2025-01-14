@@ -118,7 +118,7 @@ def batch_version(
                              prerelease, commit, tag, changelog, push)
 
 
-@cli.command()
+@cli.command(help="install shell completion for bash, zsh or fish shells")
 def install_completion():
     """Install shell completion for bash, zsh, or fish shells."""
     api.install_shell_completion('release-mate')
