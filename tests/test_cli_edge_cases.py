@@ -7,9 +7,10 @@ from unittest.mock import MagicMock, patch
 import pytest
 from click.testing import CliRunner
 
-from release_mate.cli import (cli, get_git_info, get_normalized_project_dir,
+from release_mate.api import (get_git_info, get_normalized_project_dir,
                               run_semantic_release,
                               run_semantic_release_changelog)
+from release_mate.cli import cli
 
 
 @pytest.fixture
@@ -70,7 +71,7 @@ def test_run_semantic_release_changelog_directory_change(tmp_path):
 
 def test_version_worker_git_error(cli_runner):
     """Test version worker with git error."""
-    with patch("release_mate.cli.validate_git_repository") as mock_validate:
+    with patch("release_mate.api.validate_git_repository") as mock_validate:
         mock_validate.side_effect = Exception("Git error")
         result = cli_runner.invoke(cli, ["version"])
         assert result.exit_code == 1
@@ -78,7 +79,7 @@ def test_version_worker_git_error(cli_runner):
 
 def test_batch_version_no_release_mate_dir(cli_runner, mock_repo):
     """Test batch version when .release-mate directory doesn't exist."""
-    with patch("release_mate.cli.validate_git_repository") as mock_validate, \
+    with patch("release_mate.api.validate_git_repository") as mock_validate, \
             patch("pathlib.Path.glob") as mock_glob:
 
         mock_validate.return_value = mock_repo
@@ -90,10 +91,10 @@ def test_batch_version_no_release_mate_dir(cli_runner, mock_repo):
 
 def test_batch_version_branch_switch_error(cli_runner, mock_repo):
     """Test batch version with branch switch error."""
-    with patch("release_mate.cli.validate_git_repository") as mock_validate, \
+    with patch("release_mate.api.validate_git_repository") as mock_validate, \
             patch("pathlib.Path.glob") as mock_glob, \
-            patch("release_mate.cli.identify_branch") as mock_identify, \
-            patch("release_mate.cli.get_project_config_file") as mock_get_config, \
+            patch("release_mate.api.identify_branch") as mock_identify, \
+            patch("release_mate.api.get_project_config_file") as mock_get_config, \
             patch("pathlib.Path.exists") as mock_exists:
 
         mock_validate.return_value = mock_repo
@@ -118,8 +119,8 @@ def test_get_normalized_project_dir_nonexistent(tmp_path):
 
 def test_version_worker_multiple_errors(cli_runner, mock_repo):
     """Test version worker with multiple error conditions."""
-    with patch("release_mate.cli.validate_git_repository") as mock_validate, \
-            patch("release_mate.cli.get_project_config_file") as mock_get_config, \
+    with patch("release_mate.api.validate_git_repository") as mock_validate, \
+            patch("release_mate.api.get_project_config_file") as mock_get_config, \
             patch("pathlib.Path.exists") as mock_exists:
 
         mock_validate.return_value = mock_repo
@@ -161,10 +162,10 @@ def test_batch_version_multiple_version_flags(cli_runner):
 
 def test_batch_version_with_errors(cli_runner, mock_repo):
     """Test batch version with various error conditions."""
-    with patch("release_mate.cli.validate_git_repository") as mock_validate, \
+    with patch("release_mate.api.validate_git_repository") as mock_validate, \
             patch("pathlib.Path.glob") as mock_glob, \
-            patch("release_mate.cli.identify_branch") as mock_identify, \
-            patch("release_mate.cli.get_project_config_file") as mock_get_config:
+            patch("release_mate.api.identify_branch") as mock_identify, \
+            patch("release_mate.api.get_project_config_file") as mock_get_config:
 
         mock_validate.return_value = mock_repo
         mock_glob.return_value = [

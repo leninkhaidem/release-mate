@@ -2,7 +2,7 @@
 import os
 from pathlib import Path
 
-from release_mate.cli import (get_project_config_file, get_relative_path,
+from release_mate.api import (get_project_config_file, get_relative_path,
                               identify_branch)
 
 
@@ -60,7 +60,7 @@ def test_get_project_config_file_relative_path():
 
 def test_build_version_args_all_flags():
     """Test building version arguments with all flags enabled."""
-    from release_mate.cli import build_version_args
+    from release_mate.api import build_version_args
     args = build_version_args(True, True, False, False,
                               False, True, True, True, True)
     assert "--noop" in args
@@ -69,7 +69,7 @@ def test_build_version_args_all_flags():
 
 def test_build_version_args_no_flags():
     """Test building version arguments with no flags enabled."""
-    from release_mate.cli import build_version_args
+    from release_mate.api import build_version_args
     args = build_version_args(
         False, False, False, False, False, True, True, True, True)
     assert "--noop" not in args
@@ -81,19 +81,19 @@ def test_build_version_args_no_flags():
 
 def test_display_panel_message_long_text():
     """Test displaying panel message with long text."""
-    from release_mate.cli import display_panel_message
+    from release_mate.api import display_panel_message
     long_text = "A" * 100
     display_panel_message("Test", long_text)
 
 
 def test_display_panel_message_special_chars():
     """Test displaying panel message with special characters."""
-    from release_mate.cli import display_panel_message
+    from release_mate.api import display_panel_message
     special_chars = "!@#$%^&*()"
     display_panel_message("Test", special_chars)
 
 
 def test_display_panel_message_empty():
     """Test displaying panel message with empty text."""
-    from release_mate.cli import display_panel_message
+    from release_mate.api import display_panel_message
     display_panel_message("Test", "")

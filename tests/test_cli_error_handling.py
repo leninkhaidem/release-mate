@@ -7,7 +7,7 @@ import pytest
 from click.testing import CliRunner
 from git.exc import GitCommandError
 
-from release_mate.cli import (get_git_info, run_semantic_release,
+from release_mate.api import (get_git_info, run_semantic_release,
                               run_semantic_release_changelog, version_worker)
 
 
@@ -63,7 +63,7 @@ def test_run_semantic_release_changelog_error(tmp_path):
 
 def test_version_worker_multiple_print_flags(cli_runner, mock_repo):
     """Test version worker with multiple print flags (should fail)."""
-    with patch("release_mate.cli.validate_git_repository") as mock_validate:
+    with patch("release_mate.api.validate_git_repository") as mock_validate:
         mock_validate.return_value = mock_repo
         with pytest.raises(SystemExit):
             version_worker(
@@ -75,7 +75,7 @@ def test_version_worker_multiple_print_flags(cli_runner, mock_repo):
 
 def test_version_worker_multiple_version_flags(cli_runner, mock_repo):
     """Test version worker with multiple version flags (should fail)."""
-    with patch("release_mate.cli.validate_git_repository") as mock_validate:
+    with patch("release_mate.api.validate_git_repository") as mock_validate:
         mock_validate.return_value = mock_repo
         with pytest.raises(SystemExit):
             version_worker(
@@ -87,8 +87,8 @@ def test_version_worker_multiple_version_flags(cli_runner, mock_repo):
 
 def test_version_worker_nonexistent_project(cli_runner, mock_repo):
     """Test version worker with non-existent project."""
-    with patch("release_mate.cli.validate_git_repository") as mock_validate, \
-            patch("release_mate.cli.get_project_config_file") as mock_get_config:
+    with patch("release_mate.api.validate_git_repository") as mock_validate, \
+            patch("release_mate.api.get_project_config_file") as mock_get_config:
 
         mock_validate.return_value = mock_repo
         config_file = Path("/mock/repo/path/.release-mate/test.toml")

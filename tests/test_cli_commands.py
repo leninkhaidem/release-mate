@@ -33,8 +33,8 @@ def test_version_command_help(cli_runner):
     assert "Perform a version bump" in result.output
 
 
-@patch("release_mate.cli.validate_git_repository")
-@patch("release_mate.cli.get_project_config_file")
+@patch("release_mate.api.validate_git_repository")
+@patch("release_mate.api.get_project_config_file")
 def test_version_command_invalid_project(mock_get_config, mock_validate, cli_runner):
     """Test version command with non-existent project."""
     mock_repo = MagicMock()
@@ -48,8 +48,8 @@ def test_version_command_invalid_project(mock_get_config, mock_validate, cli_run
     assert "Project 'nonexistent' does not exist in .release-mate directory" in result.output
 
 
-@patch("release_mate.cli.validate_git_repository")
-@patch("release_mate.cli.get_project_config_file")
+@patch("release_mate.api.validate_git_repository")
+@patch("release_mate.api.get_project_config_file")
 @patch("pathlib.Path.exists")
 def test_version_command_conflicting_flags(mock_exists, mock_get_config, mock_validate, cli_runner):
     """Test version command with conflicting version bump flags."""
@@ -68,8 +68,8 @@ def test_version_command_conflicting_flags(mock_exists, mock_get_config, mock_va
     assert "Only one version type flag can be specified at a time" in result.output
 
 
-@patch("release_mate.cli.validate_git_repository")
-@patch("release_mate.cli.get_project_config_file")
+@patch("release_mate.api.validate_git_repository")
+@patch("release_mate.api.get_project_config_file")
 @patch("pathlib.Path.exists")
 def test_changelog_invalid_tag(mock_exists, mock_get_config, mock_validate, cli_runner):
     """Test changelog command with invalid release tag."""
@@ -87,9 +87,9 @@ def test_changelog_invalid_tag(mock_exists, mock_get_config, mock_validate, cli_
     assert "Error" in result.output
 
 
-@patch("release_mate.cli.validate_git_repository")
-@patch("release_mate.cli.version_worker")
-@patch("release_mate.cli.get_project_config_file")
+@patch("release_mate.api.validate_git_repository")
+@patch("release_mate.api.version_worker")
+@patch("release_mate.api.get_project_config_file")
 @patch("pathlib.Path.exists")
 def test_version_command_dry_run(mock_exists, mock_get_config, mock_worker, mock_validate, cli_runner):
     """Test version command in dry-run mode."""
@@ -122,9 +122,9 @@ def test_version_command_dry_run(mock_exists, mock_get_config, mock_worker, mock
     )
 
 
-@patch("release_mate.cli.validate_git_repository")
-@patch("release_mate.cli.version_worker")
-@patch("release_mate.cli.get_project_config_file")
+@patch("release_mate.api.validate_git_repository")
+@patch("release_mate.api.version_worker")
+@patch("release_mate.api.get_project_config_file")
 @patch("pathlib.Path.exists")
 def test_version_command_print_version(mock_exists, mock_get_config, mock_worker, mock_validate, cli_runner):
     """Test version command with print-version flag."""

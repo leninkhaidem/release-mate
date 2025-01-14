@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from click.testing import CliRunner
 
-from release_mate.cli import (build_version_args, display_panel_message,
+from release_mate.api import (build_version_args, display_panel_message,
                               get_git_info, get_normalized_project_dir,
                               get_project_config_file, identify_branch,
                               run_semantic_release,
@@ -74,9 +74,9 @@ def test_run_semantic_release_changelog_success(tmp_path):
 @patch("pathlib.Path.exists")
 def test_version_worker_print_flags(mock_exists, cli_runner, mock_repo):
     """Test version worker with print flags."""
-    with patch("release_mate.cli.validate_git_repository") as mock_validate, \
-            patch("release_mate.cli.get_project_config_file") as mock_get_config, \
-            patch("release_mate.cli.run_semantic_release") as mock_run:
+    with patch("release_mate.api.validate_git_repository") as mock_validate, \
+            patch("release_mate.api.get_project_config_file") as mock_get_config, \
+            patch("release_mate.api.run_semantic_release") as mock_run:
 
         mock_validate.return_value = mock_repo
         config_file = Path("/mock/repo/path/.release-mate/test.toml")

@@ -7,12 +7,13 @@ import git
 import pytest
 from click.testing import CliRunner
 
-from release_mate.cli import (build_version_args, cli, create_git_tag,
+from release_mate.api import (build_version_args, create_git_tag,
                               display_panel_message, get_available_project_ids,
                               get_git_info, get_normalized_project_dir,
                               identify_branch, run_semantic_release,
                               run_semantic_release_changelog,
                               validate_git_repository, version_worker)
+from release_mate.cli import cli
 
 
 @pytest.fixture
@@ -178,11 +179,11 @@ def test_cli_version(cli_runner):
 
 
 @patch("os.path.exists")
-@patch("release_mate.cli.cookiecutter")
+@patch("release_mate.api.cookiecutter")
 @patch("pathlib.Path.mkdir")
 @patch("pathlib.Path.exists", return_value=False)
 @patch("pkg_resources.resource_filename")
-@patch("release_mate.cli.get_normalized_project_dir")
+@patch("release_mate.api.get_normalized_project_dir")
 def test_cli_init_command(mock_get_normalized_project_dir, mock_resource_filename, mock_path_exists, mock_mkdir, mock_cookiecutter, mock_exists, cli_runner, mock_repo):
     """Test the init command of the CLI."""
     mock_resource_filename.return_value = "/path/to/template"
@@ -409,8 +410,8 @@ branch = "main"
     assert branch is None
 
 
-@patch("release_mate.cli.run_semantic_release")
-@patch("release_mate.cli.get_project_config_file")
+@patch("release_mate.api.run_semantic_release")
+@patch("release_mate.api.get_project_config_file")
 @patch("git.Repo")
 def test_version_worker(mock_repo, mock_get_config, mock_run_semantic_release):
     """Test version worker function."""
@@ -449,8 +450,8 @@ def test_version_worker(mock_repo, mock_get_config, mock_run_semantic_release):
         assert "--no-push" in args
 
 
-@patch("release_mate.cli.run_semantic_release")
-@patch("release_mate.cli.get_project_config_file")
+@patch("release_mate.api.run_semantic_release")
+@patch("release_mate.api.get_project_config_file")
 @patch("git.Repo")
 def test_version_worker_error_handling(mock_repo, mock_get_config, mock_run_semantic_release):
     """Test version worker error handling."""
@@ -499,12 +500,12 @@ def test_create_git_tag_failure(mock_repo):
 
 def test_batch_version_success(cli_runner):
     """Test successful batch version update."""
-    with patch("release_mate.cli.get_available_project_ids") as mock_get_projects, \
-            patch("release_mate.cli.validate_git_repository") as mock_validate_repo, \
-            patch("release_mate.cli.version_worker") as mock_version_worker, \
-            patch("release_mate.cli.get_git_info") as mock_get_git_info, \
-            patch("release_mate.cli.get_project_config_file") as mock_get_config, \
-            patch("release_mate.cli.identify_branch") as mock_identify_branch, \
+    with patch("release_mate.api.get_available_project_ids") as mock_get_projects, \
+            patch("release_mate.api.validate_git_repository") as mock_validate_repo, \
+            patch("release_mate.api.version_worker") as mock_version_worker, \
+            patch("release_mate.api.get_git_info") as mock_get_git_info, \
+            patch("release_mate.api.get_project_config_file") as mock_get_config, \
+            patch("release_mate.api.identify_branch") as mock_identify_branch, \
             patch("pathlib.Path.glob") as mock_glob:
 
         mock_repo_instance = MagicMock()
@@ -525,9 +526,9 @@ def test_batch_version_success(cli_runner):
 
 def test_batch_version_no_projects(cli_runner):
     """Test batch version with no available projects."""
-    with patch("release_mate.cli.get_available_project_ids") as mock_get_projects, \
-            patch("release_mate.cli.validate_git_repository") as mock_validate_repo, \
-            patch("release_mate.cli.get_git_info") as mock_get_git_info:
+    with patch("release_mate.api.get_available_project_ids") as mock_get_projects, \
+            patch("release_mate.api.validate_git_repository") as mock_validate_repo, \
+            patch("release_mate.api.get_git_info") as mock_get_git_info:
 
         mock_get_projects.return_value = []
         mock_validate_repo.return_value = MagicMock()
@@ -539,11 +540,11 @@ def test_batch_version_no_projects(cli_runner):
 
 def test_changelog_success(cli_runner):
     """Test successful changelog generation."""
-    with patch("release_mate.cli.validate_git_repository") as mock_validate_repo, \
-            patch("release_mate.cli.get_project_config_file") as mock_get_config, \
-            patch("release_mate.cli.run_semantic_release_changelog") as mock_run_changelog, \
-            patch("release_mate.cli.get_git_info") as mock_get_git_info, \
-            patch("release_mate.cli.identify_branch") as mock_identify_branch, \
+    with patch("release_mate.api.validate_git_repository") as mock_validate_repo, \
+            patch("release_mate.api.get_project_config_file") as mock_get_config, \
+            patch("release_mate.api.run_semantic_release_changelog") as mock_run_changelog, \
+            patch("release_mate.api.get_git_info") as mock_get_git_info, \
+            patch("release_mate.api.identify_branch") as mock_identify_branch, \
             patch("pathlib.Path.exists") as mock_exists:
 
         mock_repo_instance = MagicMock()
@@ -562,11 +563,11 @@ def test_changelog_success(cli_runner):
 
 def test_changelog_failure(cli_runner):
     """Test changelog generation failure."""
-    with patch("release_mate.cli.validate_git_repository") as mock_validate_repo, \
-            patch("release_mate.cli.get_project_config_file") as mock_get_config, \
-            patch("release_mate.cli.run_semantic_release_changelog") as mock_run_changelog, \
-            patch("release_mate.cli.get_git_info") as mock_get_git_info, \
-            patch("release_mate.cli.identify_branch") as mock_identify_branch, \
+    with patch("release_mate.api.validate_git_repository") as mock_validate_repo, \
+            patch("release_mate.api.get_project_config_file") as mock_get_config, \
+            patch("release_mate.api.run_semantic_release_changelog") as mock_run_changelog, \
+            patch("release_mate.api.get_git_info") as mock_get_git_info, \
+            patch("release_mate.api.identify_branch") as mock_identify_branch, \
             patch("pathlib.Path.exists") as mock_exists:
 
         mock_repo_instance = MagicMock()
@@ -584,8 +585,8 @@ def test_changelog_failure(cli_runner):
         assert result.exit_code == 1
 
 
-@patch("release_mate.cli.validate_git_repository")
-@patch("release_mate.cli.get_project_config_file")
+@patch("release_mate.api.validate_git_repository")
+@patch("release_mate.api.get_project_config_file")
 def test_version_worker_print_version(mock_get_config, mock_validate_repo, mock_repo, tmp_path):
     """Test version worker with print version flag."""
     mock_validate_repo.return_value = mock_repo
@@ -600,8 +601,8 @@ branch = "main"
 
     mock_get_config.return_value = config_file
 
-    with patch("release_mate.cli.run_semantic_release") as mock_run, \
-            patch("release_mate.cli.get_git_info") as mock_get_git_info:
+    with patch("release_mate.api.run_semantic_release") as mock_run, \
+            patch("release_mate.api.get_git_info") as mock_get_git_info:
         mock_run.return_value = None  # run_semantic_release doesn't return anything
         mock_get_git_info.return_value = ("main", "", "", str(tmp_path))
 
