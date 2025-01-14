@@ -25,6 +25,16 @@ After installation, verify that Release Mate is installed correctly:
 release-mate --version
 ```
 
+## Shell Completion
+
+Release Mate supports command-line completion for bash, zsh, and fish shells. To enable it, simply run:
+
+```bash
+release-mate install-completion
+```
+
+This command will automatically install the appropriate shell completion for your current shell (bash, zsh, or fish). After installation, restart your shell or source your shell's config file to enable completion.
+
 ## Dependencies
 
 Release Mate automatically installs the following core dependencies:
@@ -55,4 +65,3 @@ source .venv/bin/activate
 
 # Install Release Mate
 pip install release-mate
-```
