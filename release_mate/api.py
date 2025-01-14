@@ -630,3 +630,67 @@ def init_worker(config: ProjectConfig, current_version: str) -> None:
     except Exception as e:
         console.print_exception()
         sys.exit(1)
+
+
+def install_shell_completion(command_name: str) -> None:
+    """
+    Install shell completion for the current shell.
+    Automatically detects shell type and updates appropriate rc file.
+    """
+    shell = os.environ.get('SHELL', '')
+    if not shell:
+        display_panel_message(
+            "Error",
+            "Could not detect shell type. Please make sure SHELL environment variable is set.",
+            "red"
+        )
+        sys.exit(1)
+
+    shell_name = os.path.basename(shell)
+    rc_file = None
+    completion_command = None
+
+    if shell_name == 'bash':
+        rc_file = os.path.expanduser('~/.bashrc')
+        completion_command = f'eval "$(_RELEASE_MATE_COMPLETE=bash_source {command_name})"'
+    elif shell_name == 'zsh':
+        rc_file = os.path.expanduser('~/.zshrc')
+        completion_command = f'eval "$(_RELEASE_MATE_COMPLETE=zsh_source {command_name})"'
+    elif shell_name == 'fish':
+        rc_file = os.path.expanduser('~/.config/fish/config.fish')
+        completion_command = f'eval (env _RELEASE_MATE_COMPLETE=fish_source {command_name})'
+    else:
+        display_panel_message(
+            "Error",
+            f"Unsupported shell: {shell_name}. Supported shells: bash, zsh, fish",
+            "red"
+        )
+        sys.exit(1)
+
+    # Create parent directories if they don't exist
+    os.makedirs(os.path.dirname(rc_file), exist_ok=True)
+
+    # Check if completion is already installed
+    if os.path.exists(rc_file):
+        with open(rc_file, 'r') as f:
+            if completion_command in f.read():
+                display_panel_message(
+                    "Info",
+                    "Shell completion is already installed.",
+                    "blue"
+                )
+                return
+
+    # Append completion command to rc file
+    with open(rc_file, 'a') as f:
+        f.write(f'\n# Release Mate completion\n{completion_command}\n')
+
+    display_panel_message(
+        "Success",
+        f"✨ Shell completion installed successfully!\n\n" +
+        f"The completion script has been added to: {rc_file}\n\n" +
+        "To start using completions, either:\n" +
+        f"1. Restart your shell\n" +
+        f"2. Or run: source {rc_file}",
+        "green"
+    )
