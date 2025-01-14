@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "release-mate"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python-based tool designed to simplify release and changelog management for multi-project, multi-branch repositories. Powered by Python Semantic Release, it automates versioning, generates consistent changelogs, and streamlines the release process across multiple projects and branches within a single Git repository."
 authors = [
     "Lenin Khaidem <leninkhaidem@gmail.com>",

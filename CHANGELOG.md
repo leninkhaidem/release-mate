@@ -1,6 +1,32 @@
 # CHANGELOG
 
 
+## v0.1.1 (2025-01-14)
+
+### Documentation
+
+- Add support for custom configuration files in CLI commands
+  ([`eb5caac`](https://github.com/leninkhaidem/release-mate/commit/eb5caacdd62eb3ed04740f4fdb097d47f0e69b1f))
+
+- Updated `release-mate version` and `release-mate changelog` commands to allow users to specify a
+  custom TOML configuration file path. - Included usage examples for custom configuration in the
+  documentation. - Enhanced clarity on how to utilize custom configurations outside of the default
+  `.release-mate` directory.
+
+- Update README to include documentation link
+  ([`4b333ac`](https://github.com/leninkhaidem/release-mate/commit/4b333ac3ec8eefbaa8b4d73d0bec6cc192d656a8))
+
+### Refactoring
+
+- Move CLI logic to API module and clean up code
+  ([`202b2ca`](https://github.com/leninkhaidem/release-mate/commit/202b2ca4571d1e404d864bc27efca22a584f7460))
+
+- Refactored the CLI commands to utilize a new `api` module, improving code organization and
+  maintainability. - Removed redundant functions from the CLI and replaced them with calls to the
+  `api` module. - Updated import statements across multiple files to reflect the new structure. -
+  Enhanced the `__init__.py` file to include the `api` module in the package's public API.
+
+
 ## v0.1.0 (2025-01-14)
 
 ### Chores
