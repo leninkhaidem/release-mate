@@ -1,0 +1,81 @@
+[{% if cookiecutter.poetry_syntax %}tool.{% endif %}semantic_release]
+assets = []
+
+commit_message = "chore(release): {version} [skip ci]"
+commit_parser = "angular"
+logging_use_named_masks = false
+major_on_zero = true
+allow_zero_version = true
+no_git_verify = false
+tag_format = "{{cookiecutter.project_id}}-{version}"
+build_command_env = [
+    "PROJECT_DIR={{ cookiecutter.project_directory }}"
+]
+
+[{% if cookiecutter.poetry_syntax %}tool.{% endif %}semantic_release.branches.{{cookiecutter.branch}}]
+match = "{{cookiecutter.branch}}"
+prerelease_token = "{{cookiecutter.project_id}}"
+prerelease = false
+
+[{% if cookiecutter.poetry_syntax %}tool.{% endif %}semantic_release.changelog]
+exclude_commit_patterns = []
+mode = "init"
+insertion_flag = "<!-- version list -->"
+template_dir = "templates"
+
+[{% if cookiecutter.poetry_syntax %}tool.{% endif %}semantic_release.changelog.default_templates]
+changelog_file = "{{cookiecutter.project_directory}}/CHANGELOG.md"
+output_format = "md"
+mask_initial_release = false
+
+
+[{% if cookiecutter.poetry_syntax %}tool.{% endif %}semantic_release.commit_author]
+env = "GIT_COMMIT_AUTHOR"
+default = "semantic-release <semantic-release>"
+
+[{% if cookiecutter.poetry_syntax %}tool.{% endif %}semantic_release.commit_parser_options]
+minor_tags = [
+    "feat",
+]
+patch_tags = [
+    "fix",
+    "perf",
+]
+other_allowed_tags = [
+    "build",
+    "chore",
+    "ci",
+    "docs",
+    "style",
+    "refactor",
+    "test",
+]
+allowed_tags = [
+    "feat",
+    "fix",
+    "perf",
+    "build",
+    "chore",
+    "ci",
+    "docs",
+    "style",
+    "refactor",
+    "test",
+]
+default_bump_level = 0
+
+[{% if cookiecutter.poetry_syntax %}tool.{% endif %}semantic_release.remote]
+name = "origin"
+type = "github"
+ignore_token_for_push = false
+insecure = false
+domain = "{{cookiecutter.domain}}"
+
+[{% if cookiecutter.poetry_syntax %}tool.{% endif %}semantic_release.remote.token]
+env = "GH_TOKEN"
+
+[{% if cookiecutter.poetry_syntax %}tool.{% endif %}semantic_release.publish]
+dist_glob_patterns = [
+    "dist/*",
+]
+upload_to_vcs_release = false

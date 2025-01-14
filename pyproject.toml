@@ -1,0 +1,152 @@
+[tool.poetry]
+name = "release-mate"
+version = "0.1.0"
+description = "Python-based tool designed to simplify release and changelog management for multi-project, multi-branch repositories. Powered by Python Semantic Release, it automates versioning, generates consistent changelogs, and streamlines the release process across multiple projects and branches within a single Git repository."
+authors = [
+    "Lenin Khaidem <leninkhaidem@gmail.com>",
+]
+readme = "README.md"
+license = "MIT"
+documentation = "https://leninkhaidem.github.io/release-mate"
+repository = "https://github.com/leninkhaidem/release-mate"
+keywords = [
+    "release management",
+    "changelog generation",
+    "semantic versioning",
+    "multi-project support",
+    "git integration",
+    "python tool",
+    "automation",
+    "devops",
+    "continuous integration",
+    "version control",
+    "python semantic release",
+    "project management"
+]
+packages = [
+    { include = "release_mate" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+click = "^8.1.7"
+rich = "^13.7.0"
+gitpython = "^3.1.40"
+cookiecutter = "^2.5.0"
+python-semantic-release = "^9.16.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+
+[tool.poetry.scripts]
+release-mate = "release_mate.cli:cli"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=release_mate --cov-report=term-missing"
+
+[tool.semantic_release]
+assets = []
+build_command_env = []
+commit_message = "chore(release): {version} [skip ci]"
+commit_parser = "angular"
+logging_use_named_masks = false
+major_on_zero = true
+allow_zero_version = true
+no_git_verify = false
+tag_format = "v{version}"
+build_command = "rm -rf dist/* 2>/dev/null || echo && pip install poetry && poetry build -f wheel"
+version_variables = [
+    "release_mate/__init__.py:__version__",
+]
+version_toml = [
+    "pyproject.toml:tool.poetry.version",
+]
+
+[tool.semantic_release.branches.main]
+match = "(main|master)"
+prerelease_token = "rc"
+prerelease = false
+
+[tool.semantic_release.changelog]
+exclude_commit_patterns = []
+mode = "init"
+insertion_flag = "<!-- version list -->"
+template_dir = "templates"
+
+[tool.semantic_release.changelog.default_templates]
+changelog_file = "CHANGELOG.md"
+output_format = "md"
+mask_initial_release = false
+
+[tool.semantic_release.changelog.environment]
+block_start_string = "{%"
+block_end_string = "%}"
+variable_start_string = "{{"
+variable_end_string = "}}"
+comment_start_string = "{#"
+comment_end_string = "#}"
+trim_blocks = false
+lstrip_blocks = false
+newline_sequence = "\n"
+keep_trailing_newline = false
+extensions = []
+autoescape = false
+
+[tool.semantic_release.commit_author]
+env = "GIT_COMMIT_AUTHOR"
+default = "semantic-release <semantic-release>"
+
+[tool.semantic_release.commit_parser_options]
+minor_tags = [
+    "feat",
+]
+patch_tags = [
+    "fix",
+    "perf",
+]
+other_allowed_tags = [
+    "build",
+    "chore",
+    "ci",
+    "docs",
+    "style",
+    "refactor",
+    "test",
+]
+allowed_tags = [
+    "feat",
+    "fix",
+    "perf",
+    "build",
+    "chore",
+    "ci",
+    "docs",
+    "style",
+    "refactor",
+    "test",
+]
+default_bump_level = 0
+
+[tool.semantic_release.remote]
+name = "origin"
+type = "github"
+ignore_token_for_push = false
+insecure = false
+
+[tool.semantic_release.remote.token]
+env = "GH_TOKEN"
+
+[tool.semantic_release.publish]
+dist_glob_patterns = [
+    "dist/*",
+]
+upload_to_vcs_release = true
+
+[build-system]
+requires = [
+    "poetry-core",
+]
+build-backend = "poetry.core.masonry.api"

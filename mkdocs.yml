@@ -1,0 +1,106 @@
+site_name: release-mate
+site_description: Python-based tool designed to simplify release and changelog management for multi-project, multi-branch repositories. Powered by Python Semantic Release, it automates versioning, generates consistent changelogs, and streamlines the release process across multiple projects and branches within a single Git repository.
+repo_url: https://github.com/leninkhaidem/release-mate
+repo_name: release-mate
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quick-start.md
+  - User Guide:
+      - Project Setup: user-guide/project-setup.md
+  - Reference:
+      - CLI Commands: reference/cli-commands.md
+      - Commit Guidelines: reference/commit-guidelines.md
+  - Changelog: CHANGELOG.md
+plugins:
+  - search
+  - termynal
+  - mike:
+      alias_type: redirect
+      redirect_template: null
+      deploy_prefix: ""
+      canonical_version: null
+      version_selector: true
+      css_dir: css
+      javascript_dir: js
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: cx-automation-utils
+      repo: release-mate
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+extra:
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/leninkhaidem/release-mate
+      name: release-mate on GitHub
+
+copyright: Copyright &copy; 2025 Lenin Khaidem
