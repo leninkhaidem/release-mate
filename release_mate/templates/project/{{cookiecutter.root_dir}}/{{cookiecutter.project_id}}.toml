@@ -11,6 +11,8 @@ tag_format = "{{cookiecutter.project_id}}-{version}"
 build_command_env = [
     "PROJECT_DIR={{ cookiecutter.project_directory }}"
 ]
+build_command = ""
+version_variables = []
 
 [{% if cookiecutter.poetry_syntax %}tool.{% endif %}semantic_release.branches.{{cookiecutter.branch}}]
 match = "{{cookiecutter.branch}}"

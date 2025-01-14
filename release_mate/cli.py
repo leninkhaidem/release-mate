@@ -194,8 +194,10 @@ def init(
         display_panel_message(
             "Release Mate Init",
             f"✅ Successfully initialized release-mate for project [bold green]{config.project_id}[/bold green]\n"
-            f"📁 Configuration file: [bold blue]{config_file}[/bold blue]",
-            "green"
+            f"📁 Configuration file: [bold blue]{config_file}[/bold blue]\n"
+            f"🔧 Make sure to update [bold blue]build_command[/bold blue] and [bold blue]version_variables[/bold blue] in {config_file} to suit your project needs.",
+            "green",
+
         )
         create_git_tag(f"{config.project_id}-{current_version}")
 
@@ -336,7 +338,7 @@ def version_worker(
         project_id = project_id or branch
 
         # Check if project config exists
-        config_file = get_project_config_file(project_id, repo_root)
+        config_file = _get_config_file(project_id, repo_root)
         if not config_file.exists():
             display_panel_message(
                 "Error",
@@ -527,7 +529,7 @@ def changelog(
         branch, _, _, repo_root = get_git_info(repo)
         project_id = project_id or branch
         # Check if project config exists
-        config_file = get_project_config_file(project_id, repo_root)
+        config_file = _get_config_file(project_id, repo_root)
         if not config_file.exists():
             display_panel_message(
                 "Error",
@@ -558,6 +560,12 @@ def changelog(
     except Exception as e:
         console.print_exception()
         sys.exit(1)
+
+
+def _get_config_file(project_id, repo_root):
+    config_file = Path(project_id) if os.path.isfile(
+        project_id) else get_project_config_file(project_id, repo_root)
+    return config_file
 
 
 def identify_branch(config_file: Path) -> Optional[str]:
