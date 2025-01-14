@@ -139,11 +139,12 @@ def get_project_config(project_id: str, project_dir: str) -> ProjectConfig:
     repo = validate_git_repository()
     branch, remote_url, domain, repo_root = get_git_info(repo)
     project_id = project_id or branch
-    poetry_syntax = any(os.path.exists(Path(repo_root) / project_dir / _x)
+    project_dir = get_normalized_project_dir(project_dir, repo_root)
+    poetry_syntax = any(os.path.exists(Path(project_dir) / _x)
                         for _x in {'pyproject.toml', 'poetry.lock'})
     return ProjectConfig(
         project_id=project_id,
-        project_directory=get_normalized_project_dir(project_dir, repo_root),
+        project_directory=project_dir,
         branch=branch,
         remote_url=remote_url,
         domain=domain,
