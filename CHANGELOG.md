@@ -1,6 +1,18 @@
 # CHANGELOG
 
 
+## v0.1.2 (2025-01-14)
+
+### Refactoring
+
+- Update worker initialization in CLI and API
+  ([`291e2fb`](https://github.com/leninkhaidem/release-mate/commit/291e2fb8f6cc7f7812157ddf0a23a4a7c3a47fae))
+
+- Refactored the `init_worker` function in the API to accept a `ProjectConfig` object instead of
+  individual parameters. - Modified the CLI command to retrieve the project configuration before
+  calling `init_worker`, improving code clarity and maintainability.
+
+
 ## v0.1.1 (2025-01-14)
 
 ### Documentation
