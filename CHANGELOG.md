@@ -1,6 +1,31 @@
 # CHANGELOG
 
 
+## v0.1.4 (2025-01-14)
+
+### Bug Fixes
+
+- **api, cli**: Enhance worker initialization with template directory
+  ([`dc195b3`](https://github.com/leninkhaidem/release-mate/commit/dc195b32d78cbfd47a159fcdd36f3f010c8ac463))
+
+- Updated the `init_worker` function in the API to accept a `template_dir` parameter, allowing for
+  more flexible template management. - Modified the CLI command to retrieve the template directory
+  using `pkg_resources` before invoking `init_worker`, improving code clarity and maintainability.
+
+### Code Style
+
+- **cli**: Add help description for install_completion command
+  ([`cd6c08c`](https://github.com/leninkhaidem/release-mate/commit/cd6c08c1c19c02cb81b30c5914d85479b2be6cbb))
+
+- Enhanced the `install_completion` CLI command by adding a help description to clarify its purpose
+  for installing shell completion for bash, zsh, or fish shells.
+
+### Documentation
+
+- Updated docs for shell autocomplete
+  ([`e5bcb7a`](https://github.com/leninkhaidem/release-mate/commit/e5bcb7a609bd97b1e153eb51d43de6db0de29f72))
+
+
 ## v0.1.3 (2025-01-14)
 
 ### Bug Fixes
