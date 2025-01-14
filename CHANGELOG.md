@@ -1,6 +1,26 @@
 # CHANGELOG
 
 
+## v0.1.3 (2025-01-14)
+
+### Bug Fixes
+
+- **api**: Streamline project directory handling in get_project_config to correctly identify poetry
+  project
+  ([`d1fe900`](https://github.com/leninkhaidem/release-mate/commit/d1fe900194c153a164022e7e46851cbc903f8ae9))
+
+- Updated the `get_project_config` function to normalize the project directory before checking for
+  Poetry configuration files.
+
+- **cli**: Add shell completion installation command
+  ([`6a91825`](https://github.com/leninkhaidem/release-mate/commit/6a91825cdeae041db7de903eb83b37162a7d7f2f))
+
+- Introduced a new CLI command `install_completion` to facilitate the installation of shell
+  completion for bash, zsh, and fish shells. - Implemented the `install_shell_completion` function
+  in the API to handle the detection of the shell type, update the appropriate rc file, and provide
+  user feedback on the installation status.
+
+
 ## v0.1.2 (2025-01-14)
 
 ### Refactoring
