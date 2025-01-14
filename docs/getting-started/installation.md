@@ -65,3 +65,4 @@ source .venv/bin/activate
 
 # Install Release Mate
 pip install release-mate
+```
