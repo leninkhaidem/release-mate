@@ -648,13 +648,25 @@ def install_shell_completion(command_name: str) -> None:
 
     if shell_name == 'bash':
         rc_file = os.path.expanduser('~/.bashrc')
-        completion_command = f'eval "$(_RELEASE_MATE_COMPLETE=bash_source {command_name})"'
+        completion_command = (
+            f'if command -v {command_name} > /dev/null; then\n'
+            f'  eval "$(_RELEASE_MATE_COMPLETE=bash_source {command_name} 2>/dev/null || true)"\n'
+            f'fi'
+        )
     elif shell_name == 'zsh':
         rc_file = os.path.expanduser('~/.zshrc')
-        completion_command = f'eval "$(_RELEASE_MATE_COMPLETE=zsh_source {command_name})"'
+        completion_command = (
+            f'if (( $+commands[{command_name}] )); then\n'
+            f'  eval "$(_RELEASE_MATE_COMPLETE=zsh_source {command_name} 2>/dev/null || true)"\n'
+            f'fi'
+        )
     elif shell_name == 'fish':
         rc_file = os.path.expanduser('~/.config/fish/config.fish')
-        completion_command = f'eval (env _RELEASE_MATE_COMPLETE=fish_source {command_name})'
+        completion_command = (
+            f'if type -q {command_name}\n'
+            f'  eval (env _RELEASE_MATE_COMPLETE=fish_source {command_name} 2>/dev/null; or true)\n'
+            f'end'
+        )
     else:
         display_panel_message(
             "Error",
