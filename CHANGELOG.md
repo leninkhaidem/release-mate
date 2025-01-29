@@ -1,6 +1,25 @@
 # CHANGELOG
 
 
+## v0.1.5 (2025-01-29)
+
+### Bug Fixes
+
+- **api**: Improve shell completion installation robustness
+  ([`d6c22a0`](https://github.com/leninkhaidem/release-mate/commit/d6c22a0a7494e6b9de7dc6fc9a167db0c5bdeb08))
+
+- Enhanced shell completion installation for bash, zsh, and fish shells
+
+- Added conditional checks to prevent errors if command is not available
+
+- Implemented error suppression and fallback mechanisms for completion script sourcing
+
+### Documentation
+
+- Updated docs formatting
+  ([`c51f0e3`](https://github.com/leninkhaidem/release-mate/commit/c51f0e352d48729dc30652b58954110eb0d3ea7f))
+
+
 ## v0.1.4 (2025-01-14)
 
 ### Bug Fixes
