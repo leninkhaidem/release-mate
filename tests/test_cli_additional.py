@@ -1,12 +1,14 @@
 """Additional test cases for CLI functionality to increase coverage."""
+import subprocess
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
 from click.testing import CliRunner
 
-from release_mate.api import (build_version_args, display_panel_message,
-                              get_git_info, get_normalized_project_dir,
+from release_mate.api import (_execute_publish, build_version_args,
+                              display_panel_message, get_git_info,
+                              get_normalized_project_dir,
                               get_project_config_file, identify_branch,
                               run_semantic_release,
                               run_semantic_release_changelog, version_worker)
@@ -97,8 +99,8 @@ def test_version_worker_print_flags(mock_exists, cli_runner, mock_repo):
 def test_build_version_args_combinations():
     """Test building version arguments with different combinations."""
     # Test with all flags enabled
-    args = build_version_args(True, True, False, False,
-                              False, True, True, True, True)
+    args = build_version_args(True, True, False, False, False,
+                              True, True, True, True)
     assert "--noop" in args
     assert "--major" in args
 
@@ -151,3 +153,58 @@ def test_get_project_config_file_absolute_path():
     config = get_project_config_file("test", "/absolute/path")
     assert config.is_absolute()
     assert str(config).endswith(".release-mate/test.toml")
+
+
+def test_execute_publish_success(tmp_path):
+    """Test successful publish execution."""
+    config_file = tmp_path / "test.toml"
+    config_file.touch()
+
+    with patch("subprocess.run") as mock_run:
+        mock_run.return_value.stdout = "Published successfully"
+        mock_run.return_value.stderr = ""
+        _execute_publish(config_file, ["--noop"], str(tmp_path))
+        mock_run.assert_called_with(
+            ["semantic-release", "-c", str(config_file), "--noop", "publish"],
+            check=True, capture_output=True, text=True
+        )
+
+
+def test_execute_publish_with_tag(tmp_path):
+    """Test publish execution with specific tag."""
+    config_file = tmp_path / "test.toml"
+    config_file.touch()
+
+    with patch("subprocess.run") as mock_run:
+        mock_run.return_value.stdout = "Published with tag"
+        mock_run.return_value.stderr = ""
+        _execute_publish(config_file, ["--tag=v1.0.0"], str(tmp_path))
+        mock_run.assert_called_with(
+            ["semantic-release", "-c",
+                str(config_file), "publish", "--tag=v1.0.0"],
+            check=True, capture_output=True, text=True
+        )
+
+
+def test_execute_publish_error(tmp_path):
+    """Test publish execution with error."""
+    config_file = tmp_path / "test.toml"
+    config_file.touch()
+
+    with patch("subprocess.run") as mock_run:
+        mock_run.side_effect = subprocess.CalledProcessError(
+            1, "semantic-release", stderr="Failed to publish")
+        with pytest.raises(SystemExit):
+            _execute_publish(config_file, [], str(tmp_path))
+
+
+@patch("pathlib.Path.exists")
+def test_publish_nonexistent_project(mock_exists, cli_runner, mock_repo):
+    """Test publish with non-existent project."""
+    with patch("release_mate.api.validate_git_repository") as mock_validate:
+        mock_validate.return_value = mock_repo
+        mock_exists.return_value = False
+
+        from release_mate.api import publish_worker
+        with pytest.raises(SystemExit):
+            publish_worker(project_id="nonexistent")
