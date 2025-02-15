@@ -1,4 +1,6 @@
 """Command line interface for release-mate tool."""
+
+import contextlib
 import dataclasses
 import os
 import re
@@ -10,7 +12,6 @@ from pathlib import Path
 from typing import List, Optional
 
 import git
-import pkg_resources
 from cookiecutter.main import cookiecutter
 from git.exc import GitCommandError
 from rich import print as rprint
@@ -338,7 +339,7 @@ def version_worker(
 
         run_semantic_release(config_file, args, repo_root)
 
-    except Exception as e:
+    except Exception:
         console.print_exception()
         sys.exit(1)
 
@@ -412,9 +413,11 @@ def run_semantic_release_changelog(config_file: Path, args: List[str], repo_path
 
 
 def get_config_file(project_id, repo_root):
-    config_file = Path(project_id) if os.path.isfile(
-        project_id) else get_project_config_file(project_id, repo_root)
-    return config_file
+    return (
+        Path(project_id)
+        if os.path.isfile(project_id)
+        else get_project_config_file(project_id, repo_root)
+    )
 
 
 def identify_branch(config_file: Path) -> Optional[str]:
@@ -427,16 +430,14 @@ def identify_branch(config_file: Path) -> Optional[str]:
     Returns:
         Optional[str]: The branch name if found, otherwise None
     """
-    try:
+    with contextlib.suppress(Exception):
         with open(config_file, 'r') as f:
             content = f.read()
             # Look for the branch match pattern
             branch_match = re.search(
                 r'\[.*semantic_release\.branches\.(\w+)\]', content)
             if branch_match:
-                return branch_match.group(1)
-    except Exception:
-        pass
+                return branch_match[1]
     return None
 
 
@@ -516,12 +517,20 @@ def changelog_worker(project_id: str, post_to_release_tag: Optional[str], noop: 
 
         run_semantic_release_changelog(config_file, args, repo_root)
 
-    except Exception as e:
+    except Exception:
         console.print_exception()
         sys.exit(1)
 
 
-def batch_version_worker(noop: bool, major: bool, minor: bool, patch: bool, prerelease: bool, commit: bool, tag: bool, changelog: bool, push: bool):
+def batch_version_worker(noop: bool,
+                         major: bool,
+                         minor: bool,
+                         patch: bool,
+                         prerelease: bool,
+                         commit: bool,
+                         tag: bool,
+                         changelog: bool,
+                         push: bool):
     try:
         repo = validate_git_repository()
         _, _, _, repo_root = get_git_info(repo)
@@ -579,7 +588,7 @@ def batch_version_worker(noop: bool, major: bool, minor: bool, patch: bool, prer
                     push=push
                 )
 
-            except Exception as e:
+            except Exception:
                 errors.append(
                     f"Error processing project {project_id}: {traceback.format_exc()}")
 
@@ -623,7 +632,99 @@ def init_worker(config: ProjectConfig, current_version: str, template_dir: str) 
         )
         create_git_tag(f"{config.project_id}-{current_version}")
 
-    except Exception as e:
+    except Exception:
+        console.print_exception()
+        sys.exit(1)
+
+
+def _execute_publish(config_file: Path, args: List[str], repo_path: str) -> None:
+    """
+    Run semantic-release publish command with the given configuration file and arguments.
+
+    Args:
+        config_file (Path): Path to the semantic-release configuration file
+        args (List[str]): List of arguments to pass to semantic-release
+        repo_path (str): Path to the git repository root
+    """
+    # Split args into pre-command and post-command args
+    pre_command_args = []
+    post_command_args = []
+
+    for arg in args:
+        if arg == "--noop":
+            pre_command_args.append(arg)
+        else:
+            post_command_args.append(arg)
+
+    cmd = ["semantic-release", "-c",
+           str(config_file)] + pre_command_args + ["publish"] + post_command_args
+
+    # Store current directory
+    current_dir = os.getcwd()
+    try:
+        # Change to repo directory
+        os.chdir(repo_path)
+
+        result = subprocess.run(
+            cmd, check=True, capture_output=True, text=True)
+        if result.stdout:
+            display_panel_message(
+                "Publish Logs",
+                result.stdout,
+                "blue"
+            )
+        if result.stderr:
+            display_panel_message(
+                "Publish Logs",
+                result.stderr,
+                "red"
+            )
+    except subprocess.CalledProcessError as e:
+        display_panel_message(
+            "Error",
+            f"Failed to run semantic-release publish: {e.stderr}",
+            "red"
+        )
+        sys.exit(1)
+    finally:
+        # Always restore original directory
+        os.chdir(current_dir)
+
+
+def publish_worker(project_id: Optional[str] = None, noop: bool = False) -> None:
+    """
+    Core worker function for publishing a release.
+
+    Args:
+        project_id (Optional[str]): Project identifier. If None, uses current branch name.
+        noop (bool): Dry run without making changes
+    """
+    try:
+        repo = validate_git_repository()
+        branch, _, _, repo_root = get_git_info(repo)
+        project_id = project_id or branch
+
+        # Check if project config exists
+        config_file = get_config_file(project_id, repo_root)
+        if not config_file.exists():
+            display_panel_message(
+                "Error",
+                f"Project {project_id!r} does not exist in .release-mate directory",
+                "red"
+            )
+            sys.exit(1)
+
+        args = ["--noop"] if noop else []
+
+        display_panel_message(
+            "Release Mate Publish",
+            f"Publishing release for project [bold green]{project_id}[/bold green]{' (dry run)' if noop else ''}",
+            "blue"
+        )
+
+        _execute_publish(config_file, args, repo_root)
+
+    except Exception:
         console.print_exception()
         sys.exit(1)
 
@@ -695,10 +796,10 @@ def install_shell_completion(command_name: str) -> None:
 
     display_panel_message(
         "Success",
-        f"✨ Shell completion installed successfully!\n\n" +
+        "✨ Shell completion installed successfully!\n\n" +
         f"The completion script has been added to: {rc_file}\n\n" +
         "To start using completions, either:\n" +
-        f"1. Restart your shell\n" +
+        "1. Restart your shell\n" +
         f"2. Or run: source {rc_file}",
         "green"
     )

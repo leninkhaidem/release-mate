@@ -33,7 +33,7 @@ def init(
 
 
 @cli.command()
-@click.option('--id', '-i', 'project_id', required=False, help='Project identifier')
+@click.option('--id', '-i', 'project_id', required=False, help='Project identifier', shell_complete=api.project_id_completion)
 @click.option('--noop', is_flag=True, help='Dry run without making any changes')
 @click.option('--print', 'print_version', is_flag=True, help='Print the next version and exit')
 @click.option('--print-tag', is_flag=True, help='Print the next version tag and exit')
@@ -125,6 +125,14 @@ def batch_version(
 def install_completion():
     """Install shell completion for bash, zsh, or fish shells."""
     api.install_shell_completion('release-mate')
+
+
+@cli.command()
+@click.option('--id', '-i', 'project_id', required=False, help='Project identifier', shell_complete=api.project_id_completion)
+@click.option('--noop', is_flag=True, help='Dry run without making changes')
+def publish(project_id: str, noop: bool):
+    """Publish the latest release using semantic-release."""
+    api.publish_worker(project_id, noop)
 
 
 if __name__ == '__main__':
