@@ -1,6 +1,40 @@
 # CHANGELOG
 
 
+## v0.2.0 (2025-02-15)
+
+### Features
+
+- **api, cli**: Add publish command and improve error handling
+  ([`34e4516`](https://github.com/leninkhaidem/release-mate/commit/34e4516be8970f8efb338c5ba91bf963c83b6f75))
+
+- Introduced a new publish command in the CLI for semantic-release.
+
+- Enhanced error handling by suppressing exceptions in various functions.
+
+- Refactored code for better readability and maintainability.
+
+- **api, cli**: Add tag option to publish command
+  ([`bb89924`](https://github.com/leninkhaidem/release-mate/commit/bb89924af2f9ea83c2ffd1cb523adbe9f0ad016e))
+
+- Enhanced the publish_worker function to accept an optional tag argument for release publishing.
+
+- Updated the CLI command to include the new tag option for better release management.
+
+### Testing
+
+- **cli**: Add additional tests for publish functionality
+  ([`69cc62d`](https://github.com/leninkhaidem/release-mate/commit/69cc62dd8ded7261a99e37ed6901990785083417))
+
+- Implement tests for successful publish execution.
+
+- Add tests for publish execution with specific tag.
+
+- Include error handling tests for publish execution.
+
+- Test publish with non-existent project.
+
+
 ## v0.1.5 (2025-01-29)
 
 ### Bug Fixes
@@ -13,6 +47,11 @@
 - Added conditional checks to prevent errors if command is not available
 
 - Implemented error suppression and fallback mechanisms for completion script sourcing
+
+### Chores
+
+- **release**: 0.1.5 [skip ci]
+  ([`5319b86`](https://github.com/leninkhaidem/release-mate/commit/5319b86f03f61fb7464adf1e449036efba97cd9a))
 
 ### Documentation
 
@@ -30,6 +69,11 @@
 - Updated the `init_worker` function in the API to accept a `template_dir` parameter, allowing for
   more flexible template management. - Modified the CLI command to retrieve the template directory
   using `pkg_resources` before invoking `init_worker`, improving code clarity and maintainability.
+
+### Chores
+
+- **release**: 0.1.4 [skip ci]
+  ([`52e3f9d`](https://github.com/leninkhaidem/release-mate/commit/52e3f9d52bf70ad39dbca4f8ba5b786824d963a3))
 
 ### Code Style
 
@@ -64,8 +108,18 @@
   in the API to handle the detection of the shell type, update the appropriate rc file, and provide
   user feedback on the installation status.
 
+### Chores
+
+- **release**: 0.1.3 [skip ci]
+  ([`675e95b`](https://github.com/leninkhaidem/release-mate/commit/675e95b6008099c56bd04dd7d9a15cb440edcda8))
+
 
 ## v0.1.2 (2025-01-14)
+
+### Chores
+
+- **release**: 0.1.2 [skip ci]
+  ([`0f4e8ea`](https://github.com/leninkhaidem/release-mate/commit/0f4e8ea4012ec9f9ae1e9828ebcaaaa1b284db27))
 
 ### Refactoring
 
@@ -78,6 +132,11 @@
 
 
 ## v0.1.1 (2025-01-14)
+
+### Chores
+
+- **release**: 0.1.1 [skip ci]
+  ([`4a813c2`](https://github.com/leninkhaidem/release-mate/commit/4a813c26bf912bc4a8e4f6238a708684fb3039e5))
 
 ### Documentation
 
@@ -109,6 +168,9 @@
 
 - First draft
   ([`849e3e9`](https://github.com/leninkhaidem/release-mate/commit/849e3e931df7d14c6764508efd829fa21d227b4e))
+
+- **release**: 0.1.0 [skip ci]
+  ([`693a57e`](https://github.com/leninkhaidem/release-mate/commit/693a57e7d078c29822ac604a2164da6e132cf713))
 
 ### Features
 
