@@ -130,9 +130,10 @@ def install_completion():
 @cli.command()
 @click.option('--id', '-i', 'project_id', required=False, help='Project identifier', shell_complete=api.project_id_completion)
 @click.option('--noop', is_flag=True, help='Dry run without making changes')
-def publish(project_id: str, noop: bool):
-    """Publish the latest release using semantic-release."""
-    api.publish_worker(project_id, noop)
+@click.option('--tag', help='The tag associated with the release to publish to')
+def publish(project_id: str, noop: bool, tag: Optional[str]):
+    """Build and publish a distribution to a VCS release."""
+    api.publish_worker(project_id, noop, tag)
 
 
 if __name__ == '__main__':

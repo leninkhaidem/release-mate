@@ -691,13 +691,14 @@ def _execute_publish(config_file: Path, args: List[str], repo_path: str) -> None
         os.chdir(current_dir)
 
 
-def publish_worker(project_id: Optional[str] = None, noop: bool = False) -> None:
+def publish_worker(project_id: Optional[str] = None, noop: bool = False, tag: Optional[str] = None) -> None:
     """
     Core worker function for publishing a release.
 
     Args:
         project_id (Optional[str]): Project identifier. If None, uses current branch name.
         noop (bool): Dry run without making changes
+        tag (Optional[str]): The tag associated with the release to publish to
     """
     try:
         repo = validate_git_repository()
@@ -714,7 +715,11 @@ def publish_worker(project_id: Optional[str] = None, noop: bool = False) -> None
             )
             sys.exit(1)
 
-        args = ["--noop"] if noop else []
+        args = []
+        if noop:
+            args.append("--noop")
+        if tag:
+            args.append(f"--tag={tag}")
 
         display_panel_message(
             "Release Mate Publish",
