@@ -85,6 +85,11 @@ release-mate version [OPTIONS]
 | `--[no-]tag` | Whether to create a tag for the new version (default: true) |
 | `--[no-]changelog` | Whether to update the changelog (default: true) |
 | `--[no-]push` | Whether to push the new commit and tag to the remote (default: true) |
+| `--[no-]vcs-release` | Whether to create a release in the remote VCS, if supported (default: true) |
+| `--as-prerelease` | Ensure the next version to be released is a prerelease version |
+| `--prerelease-token` | Force the next version to use this prerelease token, if it is a prerelease |
+| `--build-metadata` | Build metadata to append to the new version |
+| `--skip-build` | Skip building the current project |
 
 !!! note "Using Custom Configuration File"
     Instead of using the project ID, you can directly provide a path to a TOML configuration file. This allows you to use custom configuration files outside of the `.release-mate` directory:
@@ -209,6 +214,18 @@ release-mate version -i my-project
 
 # Generate and publish changelog
 release-mate changelog
+
+# Create a prerelease version
+release-mate version -i my-project --as-prerelease --prerelease-token=beta
+
+# Skip building during version update
+release-mate version -i my-project --skip-build
+
+# Append build metadata
+release-mate version -i my-project --build-metadata=001
+
+# Disable VCS release creation
+release-mate version -i my-project --no-vcs-release
 ```
 
 ### Using Custom Configuration
