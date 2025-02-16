@@ -544,6 +544,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#publishing-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Publishing Releases
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -778,6 +787,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#publishing-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Publishing Releases
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -872,6 +890,27 @@
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Initialize third project with different initial version</span>
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>release-mate<span class="w"> </span>init<span class="w"> </span>-d<span class="w"> </span>./packages/project3<span class="w"> </span>-v0<span class="w"> </span><span class="m">1</span>.0.0
 </span></code></pre></div>
+<h2 id="publishing-releases">Publishing Releases<a class="headerlink" href="#publishing-releases" title="Permanent link">&para;</a></h2>
+<p>Release Mate supports publishing your project releases to your Version Control System (e.g., GitHub Releases). This is typically done after version bumps and changelog generation.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Publish the latest release</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>release-mate<span class="w"> </span>publish<span class="w"> </span>-i<span class="w"> </span>my-project
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Dry run to see what would be published</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>release-mate<span class="w"> </span>publish<span class="w"> </span>-i<span class="w"> </span>my-project<span class="w"> </span>--noop
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># Publish a specific tag</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>release-mate<span class="w"> </span>publish<span class="w"> </span>-i<span class="w"> </span>my-project<span class="w"> </span>--tag<span class="w"> </span>v1.0.0
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Always use the <code>--noop</code> flag first to preview the changes before actual publishing.</p>
+</div>
+<p>When publishing a release, Release Mate will:</p>
+<ol>
+<li>Build your project distribution (if applicable)</li>
+<li>Upload the built artifacts to your VCS release page</li>
+<li>Attach the corresponding changelog section to the release notes</li>
+</ol>
 
 
 
