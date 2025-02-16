@@ -197,17 +197,23 @@ def run_semantic_release(config_file: Path, args: List[str], repo_path: str) -> 
         result = subprocess.run(
             cmd, check=True, capture_output=True, text=True)
         if result.stdout:
-            display_panel_message(
-                "Versioning Logs",
-                result.stdout,
-                "blue"
-            )
+            if _is_print_flag_set(args):
+                print(result.stdout)
+            else:
+                display_panel_message(
+                    "Versioning Logs",
+                    result.stdout,
+                    "blue"
+                )
         if result.stderr:
-            display_panel_message(
-                "Versioning Logs",
-                result.stderr,
-                "red"
-            )
+            if _is_print_flag_set(args):
+                print(result.stderr)
+            else:
+                display_panel_message(
+                    "Versioning Logs",
+                    result.stderr,
+                    "red"
+                )
     except subprocess.CalledProcessError as e:
         display_panel_message(
             "Error",
@@ -353,17 +359,31 @@ def version_worker(
         elif print_last_released_tag:
             args.append("--print-last-released-tag")
 
-        display_panel_message(
-            "Release Mate Version",
-            f"Running semantic-release for project [bold green]{project_id}[/bold green]{' (dry run)' if noop else ''}",
-            "blue"
-        )
+        if not _is_print_flag_set(args):
+            display_panel_message(
+                "Release Mate Version",
+                f"Running semantic-release for project [bold green]{project_id}[/bold green]{' (dry run)' if noop else ''}",
+                "blue"
+            )
 
         run_semantic_release(config_file, args, repo_root)
 
     except Exception:
         console.print_exception()
         sys.exit(1)
+
+
+def _is_print_flag_set(args: List[str]) -> bool:
+    """
+    Check if '--print' flag is present in command line arguments.
+
+    Args:
+        args (List[str]): List of command line arguments to check.
+
+    Returns:
+        bool: True if '--print' flag is found in any argument, False otherwise.
+    """
+    return any("--print" in arg for arg in args)
 
 
 def get_project_config_file(project_id: str, repo_root: str) -> Path:
