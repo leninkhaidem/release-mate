@@ -1,6 +1,58 @@
 # CHANGELOG
 
 
+## v0.3.0 (2025-02-16)
+
+### Chores
+
+- **pyproject**: Update GitHub token environment variable for publishing
+  ([`4bc5a72`](https://github.com/leninkhaidem/release-mate/commit/4bc5a72508ecbe66490393269d8cbf577a6bc630))
+
+- Changed environment variable from GH_TOKEN to GH_TOKEN_PUB
+
+### Documentation
+
+- Add new options for version command in CLI reference
+  ([`6943dc1`](https://github.com/leninkhaidem/release-mate/commit/6943dc16e33353912fba96f2edf68d19b2154ffc))
+
+- Add `--[no-]vcs-release` to control VCS release creation.
+
+- Introduce `--as-prerelease` and `--prerelease-token` for prerelease versions.
+
+- Include `--build-metadata` for appending build metadata.
+
+- Add `--skip-build` to skip building during version updates.
+
+- **cli**: Update quick start and user guide for publish command
+  ([`2e95b22`](https://github.com/leninkhaidem/release-mate/commit/2e95b222d7321a7d28a2b9e049f8cdf5f43dae9b))
+
+- Added `release-mate publish` command to quick start guide
+
+- Introduced detailed section on publishing releases in user guide
+
+- Included examples for using the publish command with options
+
+### Features
+
+- **api, cli**: Add additional options for versioning
+  ([`4cc530c`](https://github.com/leninkhaidem/release-mate/commit/4cc530ca8e8207cbaccfe498703f5892b8ef4fce))
+
+- Introduced `vcs_release` option to control VCS release creation.
+
+- Added `as_prerelease`, `prerelease_token`, `build_metadata`, and `skip_build` options for enhanced
+  versioning flexibility.
+
+### Testing
+
+- **cli**: Enhance version argument tests with additional flags
+  ([`2533c12`](https://github.com/leninkhaidem/release-mate/commit/2533c12794ece9447e8482ba56ce54c4ef9ccb22))
+
+- Added tests for new versioning flags including `as_prerelease`, `prerelease_token`,
+  `build_metadata`, and `skip_build`.
+
+- Updated existing tests to reflect changes in the `build_version_args` function.
+
+
 ## v0.2.0 (2025-02-15)
 
 ### Features
@@ -48,11 +100,6 @@
 
 - Implemented error suppression and fallback mechanisms for completion script sourcing
 
-### Chores
-
-- **release**: 0.1.5 [skip ci]
-  ([`5319b86`](https://github.com/leninkhaidem/release-mate/commit/5319b86f03f61fb7464adf1e449036efba97cd9a))
-
 ### Documentation
 
 - Updated docs formatting
@@ -69,11 +116,6 @@
 - Updated the `init_worker` function in the API to accept a `template_dir` parameter, allowing for
   more flexible template management. - Modified the CLI command to retrieve the template directory
   using `pkg_resources` before invoking `init_worker`, improving code clarity and maintainability.
-
-### Chores
-
-- **release**: 0.1.4 [skip ci]
-  ([`52e3f9d`](https://github.com/leninkhaidem/release-mate/commit/52e3f9d52bf70ad39dbca4f8ba5b786824d963a3))
 
 ### Code Style
 
@@ -108,18 +150,8 @@
   in the API to handle the detection of the shell type, update the appropriate rc file, and provide
   user feedback on the installation status.
 
-### Chores
-
-- **release**: 0.1.3 [skip ci]
-  ([`675e95b`](https://github.com/leninkhaidem/release-mate/commit/675e95b6008099c56bd04dd7d9a15cb440edcda8))
-
 
 ## v0.1.2 (2025-01-14)
-
-### Chores
-
-- **release**: 0.1.2 [skip ci]
-  ([`0f4e8ea`](https://github.com/leninkhaidem/release-mate/commit/0f4e8ea4012ec9f9ae1e9828ebcaaaa1b284db27))
 
 ### Refactoring
 
@@ -132,11 +164,6 @@
 
 
 ## v0.1.1 (2025-01-14)
-
-### Chores
-
-- **release**: 0.1.1 [skip ci]
-  ([`4a813c2`](https://github.com/leninkhaidem/release-mate/commit/4a813c26bf912bc4a8e4f6238a708684fb3039e5))
 
 ### Documentation
 
@@ -168,9 +195,6 @@
 
 - First draft
   ([`849e3e9`](https://github.com/leninkhaidem/release-mate/commit/849e3e931df7d14c6764508efd829fa21d227b4e))
-
-- **release**: 0.1.0 [skip ci]
-  ([`693a57e`](https://github.com/leninkhaidem/release-mate/commit/693a57e7d078c29822ac604a2164da6e132cf713))
 
 ### Features
 
