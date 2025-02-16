@@ -47,6 +47,12 @@ def init(
 @click.option('--tag/--no-tag', default=True, help='Whether or not to create a tag for the new version')
 @click.option('--changelog/--no-changelog', default=True, help='Whether or not to update the changelog')
 @click.option('--push/--no-push', default=True, help='Whether or not to push the new commit and tag to the remote')
+@click.option('--vcs-release/--no-vcs-release', default=True,
+              help='Whether or not to create a release in the remote VCS, if supported')
+@click.option('--as-prerelease', is_flag=True, help='Ensure the next version to be released is a prerelease version')
+@click.option('--prerelease-token', help='Force the next version to use this prerelease token, if it is a prerelease')
+@click.option('--build-metadata', help='Build metadata to append to the new version')
+@click.option('--skip-build', is_flag=True, help='Skip building the current project')
 def version(
     project_id: Optional[str],
     noop: bool,
@@ -61,7 +67,12 @@ def version(
     commit: bool,
     tag: bool,
     changelog: bool,
-    push: bool
+    push: bool,
+    vcs_release: bool,
+    as_prerelease: bool,
+    prerelease_token: Optional[str],
+    build_metadata: Optional[str],
+    skip_build: bool
 ):
     """Perform a version bump using semantic-release."""
     api.version_worker(
@@ -78,7 +89,12 @@ def version(
         commit=commit,
         tag=tag,
         changelog=changelog,
-        push=push
+        push=push,
+        vcs_release=vcs_release,
+        as_prerelease=as_prerelease,
+        prerelease_token=prerelease_token,
+        build_metadata=build_metadata,
+        skip_build=skip_build
     )
 
 

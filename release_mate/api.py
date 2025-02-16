@@ -259,7 +259,12 @@ def version_worker(
     commit: bool = True,
     tag: bool = True,
     changelog: bool = True,
-    push: bool = True
+    push: bool = True,
+    vcs_release: bool = True,
+    as_prerelease: bool = False,
+    prerelease_token: Optional[str] = None,
+    build_metadata: Optional[str] = None,
+    skip_build: bool = False
 ) -> None:
     """
     Core worker function for performing version bumps.
@@ -279,6 +284,11 @@ def version_worker(
         tag (bool): Whether to create a tag for the new version
         changelog (bool): Whether to update the changelog
         push (bool): Whether to push the new commit and tag to the remote
+        vcs_release (bool): Whether to create a release in the remote VCS, if supported
+        as_prerelease (bool): Ensure the next version to be released is a prerelease version
+        prerelease_token (Optional[str]): Force the next version to use this prerelease token
+        build_metadata (Optional[str]): Build metadata to append to the new version
+        skip_build (bool): Skip building the current project
     """
     try:
         repo = validate_git_repository()
@@ -307,8 +317,20 @@ def version_worker(
 
         # Build semantic-release arguments
         args = build_version_args(
-            noop, major, minor, patch, prerelease,
-            commit, tag, changelog, push
+            noop=noop,
+            major=major,
+            minor=minor,
+            patch=patch,
+            prerelease=prerelease,
+            commit=commit,
+            tag=tag,
+            changelog=changelog,
+            push=push,
+            vcs_release=vcs_release,
+            as_prerelease=as_prerelease,
+            prerelease_token=prerelease_token,
+            build_metadata=build_metadata,
+            skip_build=skip_build
         )
 
         # Handle print flags (mutually exclusive)
@@ -441,8 +463,22 @@ def identify_branch(config_file: Path) -> Optional[str]:
     return None
 
 
-def build_version_args(noop: bool, major: bool, minor: bool, patch: bool, prerelease: bool,
-                       commit: bool, tag: bool, changelog: bool, push: bool) -> List[str]:
+def build_version_args(
+    noop: bool,
+    major: bool,
+    minor: bool,
+    patch: bool,
+    prerelease: bool,
+    commit: bool,
+    tag: bool,
+    changelog: bool,
+    push: bool,
+    vcs_release: bool = True,
+    as_prerelease: bool = False,
+    prerelease_token: Optional[str] = None,
+    build_metadata: Optional[str] = None,
+    skip_build: bool = False
+) -> List[str]:
     """
     Build the list of arguments for the version command based on the provided flags.
 
@@ -479,6 +515,16 @@ def build_version_args(noop: bool, major: bool, minor: bool, patch: bool, prerel
         args.append("--no-changelog")
     if not push:
         args.append("--no-push")
+    if not vcs_release:
+        args.append("--no-vcs-release")
+    if as_prerelease:
+        args.append("--as-prerelease")
+    if prerelease_token:
+        args.append(f"--prerelease-token={prerelease_token}")
+    if build_metadata:
+        args.append(f"--build-metadata={build_metadata}")
+    if skip_build:
+        args.append("--skip-build")
 
     return args
 
@@ -585,7 +631,12 @@ def batch_version_worker(noop: bool,
                     commit=commit,
                     tag=tag,
                     changelog=changelog,
-                    push=push
+                    push=push,
+                    vcs_release=True,
+                    as_prerelease=False,
+                    prerelease_token=None,
+                    build_metadata=None,
+                    skip_build=False
                 )
 
             except Exception:
@@ -627,7 +678,8 @@ def init_worker(config: ProjectConfig, current_version: str, template_dir: str) 
             "Release Mate Init",
             f"✅ Successfully initialized release-mate for project [bold green]{config.project_id}[/bold green]\n"
             f"📁 Configuration file: [bold blue]{config_file}[/bold blue]\n"
-            f"🔧 Make sure to update [bold blue]build_command[/bold blue] and [bold blue]version_variables[/bold blue] in {config_file} to suit your project needs.",
+            f"🔧 Make sure to update [bold blue]build_command[/bold blue] and "
+            f"[bold blue]version_variables[/bold blue] in {config_file} to suit your project needs.",
             "green",
         )
         create_git_tag(f"{config.project_id}-{current_version}")
