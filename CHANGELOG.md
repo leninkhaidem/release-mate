@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.3.1 (2025-02-17)
+
+### Bug Fixes
+
+- **api**: Print plain (w/o rich) when print flag is used. Better for CI operations
+  ([`a78e07f`](https://github.com/leninkhaidem/release-mate/commit/a78e07f9288aef0f30a89b74cce1d3cd334f55e0))
+
+
 ## v0.3.0 (2025-02-16)
 
 ### Chores
