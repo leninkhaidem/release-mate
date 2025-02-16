@@ -157,6 +157,35 @@ release-mate changelog [OPTIONS] [PROJECT_ID]
     release-mate changelog /path/to/custom-config.toml
     ```
 
+## `publish` Command
+
+**Purpose**: Build and publish releases to your Version Control System (VCS). This command handles the distribution and publication of releases to your repository's release page.
+
+**Key Functions**:
+
+- Builds project distributions
+- Publishes releases to VCS (e.g., GitHub Releases)
+- Supports publishing to specific tags
+- Provides dry-run capabilities for testing
+
+```bash
+release-mate publish [OPTIONS]
+```
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `-i, --id TEXT` | Project identifier (defaults to current branch name) |
+| `--noop` | Dry run without making any changes |
+| `--tag TAG` | The tag associated with the release to publish to |
+
+!!! note "Using Custom Configuration File"
+    Similar to other commands, you can directly provide a path to a TOML configuration file:
+    ```bash
+    release-mate publish -i /path/to/custom-config.toml
+    ```
+
 ## Common Workflows
 
 ### Initial Setup

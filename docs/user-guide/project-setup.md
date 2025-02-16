@@ -95,3 +95,27 @@ release-mate init -d ./packages/project2
 # Initialize third project with different initial version
 release-mate init -d ./packages/project3 -v0 1.0.0
 ```
+
+## Publishing Releases
+
+Release Mate supports publishing your project releases to your Version Control System (e.g., GitHub Releases). This is typically done after version bumps and changelog generation.
+
+```bash
+# Publish the latest release
+release-mate publish -i my-project
+
+# Dry run to see what would be published
+release-mate publish -i my-project --noop
+
+# Publish a specific tag
+release-mate publish -i my-project --tag v1.0.0
+```
+
+!!! tip
+    Always use the `--noop` flag first to preview the changes before actual publishing.
+
+When publishing a release, Release Mate will:
+
+1. Build your project distribution (if applicable)
+2. Upload the built artifacts to your VCS release page
+3. Attach the corresponding changelog section to the release notes

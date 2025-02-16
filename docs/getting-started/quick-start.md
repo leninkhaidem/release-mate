@@ -106,3 +106,4 @@ your-repository/
     3. Run `release-mate version --noop` to preview
     4. Run `release-mate version` to release
     5. Run `release-mate changelog` to generate changelog file
+    6. Run `release-mate publish` to publish the release to your VCS
