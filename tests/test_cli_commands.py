@@ -118,7 +118,12 @@ def test_version_command_dry_run(mock_exists, mock_get_config, mock_worker, mock
         commit=True,
         tag=True,
         changelog=True,
-        push=True
+        push=True,
+        vcs_release=True,
+        as_prerelease=False,
+        prerelease_token=None,
+        build_metadata=None,
+        skip_build=False
     )
 
 
@@ -153,5 +158,10 @@ def test_version_command_print_version(mock_exists, mock_get_config, mock_worker
         commit=True,
         tag=True,
         changelog=True,
-        push=True
+        push=True,
+        vcs_release=True,
+        as_prerelease=False,
+        prerelease_token=None,
+        build_metadata=None,
+        skip_build=False
     )

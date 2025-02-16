@@ -78,6 +78,11 @@ def test_version_worker_with_all_flags(cli_runner, mock_repo):
             "--no-tag",
             "--no-changelog",
             "--no-push",
+            "--no-vcs-release",
+            "--as-prerelease",
+            "--prerelease-token=beta",
+            "--build-metadata=001",
+            "--skip-build",
             "-i", "test"
         ])
 
@@ -89,6 +94,11 @@ def test_version_worker_with_all_flags(cli_runner, mock_repo):
         assert "--no-tag" in args
         assert "--no-changelog" in args
         assert "--no-push" in args
+        assert "--no-vcs-release" in args
+        assert "--as-prerelease" in args
+        assert "--prerelease-token=beta" in args
+        assert "--build-metadata=001" in args
+        assert "--skip-build" in args
 
 
 def test_batch_version_with_branch_error(cli_runner, mock_repo):

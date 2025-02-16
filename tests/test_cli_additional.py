@@ -99,18 +99,51 @@ def test_version_worker_print_flags(mock_exists, cli_runner, mock_repo):
 def test_build_version_args_combinations():
     """Test building version arguments with different combinations."""
     # Test with all flags enabled
-    args = build_version_args(True, True, False, False, False,
-                              True, True, True, True)
+    args = build_version_args(
+        noop=True,
+        major=True,
+        minor=False,
+        patch=False,
+        prerelease=False,
+        commit=True,
+        tag=True,
+        changelog=True,
+        push=True,
+        vcs_release=True,
+        as_prerelease=True,
+        prerelease_token="beta",
+        build_metadata="001",
+        skip_build=True
+    )
     assert "--noop" in args
     assert "--major" in args
+    assert "--as-prerelease" in args
+    assert "--prerelease-token=beta" in args
+    assert "--build-metadata=001" in args
+    assert "--skip-build" in args
 
     # Test with all flags disabled
     args = build_version_args(
-        False, False, False, False, False, False, False, False, False)
+        noop=False,
+        major=False,
+        minor=False,
+        patch=False,
+        prerelease=False,
+        commit=False,
+        tag=False,
+        changelog=False,
+        push=False,
+        vcs_release=False,
+        as_prerelease=False,
+        prerelease_token=None,
+        build_metadata=None,
+        skip_build=False
+    )
     assert "--no-commit" in args
     assert "--no-tag" in args
     assert "--no-changelog" in args
     assert "--no-push" in args
+    assert "--no-vcs-release" in args
 
 
 @patch("os.path.exists")
